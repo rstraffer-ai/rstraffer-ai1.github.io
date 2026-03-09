@@ -1,0 +1,838 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Аделя — вселенная 💗</title>
+<style>
+:root{
+  --bg1:#fff8fc; --bg2:#fff0f8; --bg3:#f3ecff;
+  --text:#2b2430; --muted:#6f6578; --accent:#ff4fa3; --accent2:#a56bff; --accent3:#ffb55e;
+  --ok:#2fad71; --warn:#ff8b4d; --shadow:0 18px 44px rgba(42,25,53,.11); --radius:24px;
+  --font:ui-rounded,system-ui,-apple-system,"Segoe UI",Roboto,Arial,"Noto Sans",sans-serif;
+}
+*{box-sizing:border-box} html,body{height:100%}
+body{
+  margin:0; font-family:var(--font); color:var(--text); overflow-x:hidden;
+  background:
+    radial-gradient(1100px 760px at 8% 0%, #ffe9f4, transparent 60%),
+    radial-gradient(900px 760px at 100% 10%, #efe4ff, transparent 58%),
+    radial-gradient(900px 700px at 50% 100%, #fff0dd, transparent 45%),
+    linear-gradient(135deg, var(--bg1), #fff);
+}
+.float,.stars{position:fixed; inset:0; pointer-events:none}
+.stars{z-index:0; opacity:.55} .float{z-index:10; overflow:hidden}
+.particle{position:absolute; animation:rise linear forwards; filter:drop-shadow(0 8px 16px rgba(255,79,163,.18))}
+@keyframes rise{from{transform:translateY(30px) scale(.8);opacity:0}10%{opacity:.9}to{transform:translateY(-110vh) scale(1.2);opacity:0}}
+.topbar{
+  position:sticky; top:0; z-index:30; padding:14px 18px;
+  display:flex; gap:14px; align-items:center; justify-content:space-between;
+  background:linear-gradient(180deg, rgba(255,255,255,.9), rgba(255,255,255,.6));
+  backdrop-filter:blur(16px); border-bottom:1px solid rgba(0,0,0,.05)
+}
+.brand{display:flex; gap:12px; align-items:center}
+.logo{width:44px;height:44px;border-radius:16px;display:grid;place-items:center;color:#fff;font-size:20px;font-weight:1000;background:linear-gradient(135deg,var(--accent),var(--accent2));box-shadow:var(--shadow)}
+.tt1{font-size:14px;color:var(--muted);font-weight:900}.tt2{font-size:18px;font-weight:1000}
+.nav{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.tab,.btn,.ghost,.miniBtn,.smallBtn{border:none;cursor:pointer;font-family:inherit;transition:transform .12s ease,opacity .12s ease}
+.tab:hover,.btn:hover,.ghost:hover,.miniBtn:hover,.smallBtn:hover{transform:translateY(-1px)}
+.tab{padding:10px 12px;border-radius:999px;background:rgba(255,255,255,.8);color:var(--muted);font-weight:800;box-shadow:0 8px 18px rgba(42,25,53,.08)}
+.tab.active{color:var(--text);background:linear-gradient(135deg, rgba(255,79,163,.18), rgba(165,107,255,.16))}
+.inventoryDock{display:flex;gap:8px;align-items:center;padding:10px 12px;border-radius:999px;background:rgba(255,255,255,.84);box-shadow:0 8px 18px rgba(42,25,53,.08);color:var(--muted);font-weight:800}
+.wrap{position:relative;z-index:1;max-width:1380px;margin:0 auto;padding:24px}
+.panel{display:none;position:relative;overflow:hidden;margin-top:18px;padding:22px;background:rgba(255,255,255,.58);border:1px solid rgba(0,0,0,.05);border-radius:var(--radius);box-shadow:var(--shadow)}
+.panel.active{display:block}
+.panel:before{content:"";position:absolute;inset:-2px;pointer-events:none;background:
+  radial-gradient(700px 430px at 12% 8%, rgba(255,79,163,.14), transparent 60%),
+  radial-gradient(630px 500px at 96% 8%, rgba(165,107,255,.14), transparent 60%),
+  radial-gradient(850px 520px at 50% 110%, rgba(255,181,94,.08), transparent 60%);z-index:0}
+.panel>*{position:relative;z-index:1}
+h1,h2,h3{margin:0 0 10px} h1{font-size:44px} h2{font-size:30px} h3{font-size:20px}
+p{line-height:1.58;color:var(--muted);margin:8px 0}
+.grid2{display:grid;grid-template-columns:1.15fr .85fr;gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.grid5{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+.grid6{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
+@media (max-width:1100px){.grid2,.grid3,.grid4,.grid5,.grid6{grid-template-columns:1fr}.topbar{flex-direction:column;align-items:flex-start}.nav{justify-content:flex-start}h1{font-size:34px}}
+.card,.reward,.memeCard,.miniGameCard,.letterBox,.photoSlot,.achievementCard,.chapterCard,.videoCard,.photoFrame{
+  background:rgba(255,255,255,.84); border:1px solid rgba(0,0,0,.05); border-radius:22px; box-shadow:0 12px 28px rgba(42,25,53,.08); padding:18px
+}
+.heroTitle{background:linear-gradient(135deg,#2b2430,#71417e 55%,#ff4fa3);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:1000}
+.typing{min-height:120px;white-space:pre-wrap;font-size:18px;line-height:1.6;color:var(--text);margin-top:12px}
+.cursor{display:inline-block;width:10px;height:18px;background:rgba(255,79,163,.75);border-radius:2px;vertical-align:-3px;animation:blink 1s infinite}
+@keyframes blink{0%,49%{opacity:1}50%,100%{opacity:0}}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.btn{padding:12px 16px;border-radius:16px;color:#fff;font-weight:900;background:linear-gradient(135deg,var(--accent),var(--accent2));box-shadow:0 14px 24px rgba(255,79,163,.2)}
+.ghost{padding:12px 16px;border-radius:16px;color:var(--text);font-weight:900;background:rgba(255,255,255,.88);box-shadow:0 12px 22px rgba(42,25,53,.08)}
+.miniBtn,.smallBtn{padding:10px 12px;border-radius:14px;color:var(--text);font-weight:900;background:rgba(255,255,255,.9);box-shadow:0 10px 20px rgba(42,25,53,.08)}
+.pill{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.75);border:1px solid rgba(0,0,0,.05);font-size:13px;color:var(--muted);font-weight:800}
+.progressWrap{height:18px;border-radius:999px;overflow:hidden;background:rgba(255,255,255,.7);border:1px solid rgba(0,0,0,.05)}
+.progressBar{height:100%;width:0%;background:linear-gradient(90deg,var(--accent),var(--accent2),var(--accent3));transition:width .35s ease}
+.bigScore{font-size:48px;font-weight:1000;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1}
+.small{font-size:13px;color:var(--muted)} .divider{height:1px;background:linear-gradient(90deg,transparent,rgba(0,0,0,.08),transparent);margin:14px 0}
+.rewardTag{display:inline-flex;padding:6px 10px;border-radius:999px;background:linear-gradient(135deg, rgba(255,79,163,.18), rgba(165,107,255,.16));font-size:12px;font-weight:900}
+.locked{opacity:.66} .locked .rewardContent{filter:blur(6px)} .hidden{display:none!important} .center{text-align:center}
+.memeGallery{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+@media (max-width:1100px){.memeGallery{grid-template-columns:1fr}}
+.memeCard img,.photoFrame img{width:100%;height:220px;object-fit:cover;border-radius:16px;display:block}
+.memeCaption{margin-top:10px;font-weight:900;color:var(--text)}
+.bigYoska{padding:20px;border-radius:24px;background:linear-gradient(135deg, rgba(255,79,163,.16), rgba(165,107,255,.14));box-shadow:var(--shadow)}
+.yoskaImages{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+@media (max-width:900px){.yoskaImages{grid-template-columns:1fr}}
+.yoskaImages img{width:100%;height:320px;object-fit:cover;border-radius:18px}
+.yoskaClick{font-size:14px;color:var(--muted);font-weight:800}
+.secretMeme{position:fixed;inset:0;display:none;place-items:center;background:rgba(20,12,26,.55);z-index:50;padding:20px}
+.secretMeme.show{display:grid}
+.secretBox{max-width:680px;width:100%;background:#fff;border-radius:24px;padding:22px;box-shadow:var(--shadow);text-align:center}
+.secretTitle{font-size:28px;font-weight:1000;margin-bottom:10px}
+.secretGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}
+.secretGrid img{width:100%;height:220px;object-fit:cover;border-radius:18px}
+.wheelWrap{display:grid;place-items:center;gap:12px}
+.memeWheel{width:min(320px,90vw);aspect-ratio:1/1;border-radius:50%;border:10px solid rgba(255,255,255,.92);box-shadow:var(--shadow);position:relative;background:conic-gradient(#ffd7ec 0 45deg,#efe3ff 45deg 90deg,#ffe8d1 90deg 135deg,#ffd7ec 135deg 180deg,#efe3ff 180deg 225deg,#ffe8d1 225deg 270deg,#ffd7ec 270deg 315deg,#efe3ff 315deg 360deg);transition:transform 4.4s cubic-bezier(.18,.82,.14,1)}
+.memeWheel span{position:absolute;left:50%;top:50%;transform-origin:0 0;font-size:12px;font-weight:1000;color:#5b4b66;width:110px;text-align:center}
+.pointer{width:0;height:0;border-left:18px solid transparent;border-right:18px solid transparent;border-top:28px solid var(--accent);filter:drop-shadow(0 8px 12px rgba(255,79,163,.22))}
+.randomPhrase{font-size:26px;font-weight:1000;color:var(--text);min-height:42px}
+.playfield{position:relative;height:360px;border-radius:22px;overflow:hidden;background:linear-gradient(180deg, rgba(255,255,255,.82), rgba(255,255,255,.6));border:1px solid rgba(0,0,0,.05);box-shadow:var(--shadow);user-select:none}
+.basket{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);width:124px;height:56px;border-radius:20px;display:grid;place-items:center;color:#fff;font-weight:1000;background:linear-gradient(135deg,var(--accent),var(--accent2));box-shadow:0 16px 28px rgba(255,79,163,.2)}
+.fallingThing{position:absolute;top:-40px;font-size:24px;filter:drop-shadow(0 8px 14px rgba(255,79,163,.18))}
+.memoryGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px}
+@media (max-width:760px){.memoryGrid{grid-template-columns:repeat(3,1fr)}}
+.memoryCard{aspect-ratio:1/1;position:relative;perspective:1000px;cursor:pointer}
+.memoryInner{position:absolute;inset:0;border-radius:18px;transition:transform .45s ease;transform-style:preserve-3d;box-shadow:0 10px 20px rgba(42,25,53,.08)}
+.memoryCard.open .memoryInner,.memoryCard.matched .memoryInner{transform:rotateY(180deg)}
+.memoryFront,.memoryBack{position:absolute;inset:0;border-radius:18px;backface-visibility:hidden;display:grid;place-items:center;border:1px solid rgba(0,0,0,.05)}
+.memoryFront{background:linear-gradient(135deg, rgba(255,79,163,.18), rgba(165,107,255,.16));font-size:32px}
+.memoryBack{transform:rotateY(180deg);background:rgba(255,255,255,.88);font-size:32px}
+.answerInput,.guessInput{width:100%;padding:12px 14px;border-radius:14px;border:1px solid rgba(0,0,0,.1);background:rgba(255,255,255,.9);font:inherit;font-weight:800;color:var(--text)}
+.msg{margin-top:10px;padding:12px 14px;border-radius:16px;background:rgba(255,255,255,.84);border:1px solid rgba(0,0,0,.05);color:var(--muted);line-height:1.55}
+.ok{color:var(--ok);font-weight:1000} .no{color:var(--warn);font-weight:1000}
+.sequencePads{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.pad{height:90px;border-radius:18px;background:rgba(255,255,255,.86);border:1px solid rgba(0,0,0,.05);display:grid;place-items:center;font-size:24px;font-weight:1000;cursor:pointer;box-shadow:0 8px 16px rgba(42,25,53,.06)}
+.pad.flash{background:linear-gradient(135deg, rgba(255,79,163,.25), rgba(165,107,255,.24))}
+.gameBoard5{display:grid;grid-template-columns:repeat(5,56px);gap:8px;justify-content:center}
+.tile5{width:56px;height:56px;border-radius:14px;background:rgba(255,255,255,.9);border:1px solid rgba(0,0,0,.06);display:grid;place-items:center;font-weight:1000;font-size:20px;cursor:pointer;box-shadow:0 8px 16px rgba(42,25,53,.06)}
+.tile5.on{background:linear-gradient(135deg, rgba(255,79,163,.22), rgba(165,107,255,.2))}
+.runnerLane{height:150px;border-radius:18px;background:rgba(255,255,255,.84);border:1px solid rgba(0,0,0,.05);position:relative;overflow:hidden}
+.runner{position:absolute;left:16px;bottom:16px;font-size:34px;transition:bottom .18s ease}
+.obstacle{position:absolute;right:-40px;bottom:16px;font-size:28px}
+.tapHeartsWrap{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.tapHeart{height:90px;border-radius:18px;background:rgba(255,255,255,.88);border:1px solid rgba(0,0,0,.05);display:grid;place-items:center;font-size:34px;cursor:pointer}
+.mazeGrid{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
+.mazeTile{aspect-ratio:1/1;border-radius:14px;background:rgba(255,255,255,.9);display:grid;place-items:center;cursor:pointer;border:1px solid rgba(0,0,0,.05)}
+.mazeTile.done{background:linear-gradient(135deg, rgba(68,200,120,.25), rgba(80,220,160,.18))}
+.photoPuzzle{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:420px;margin:auto}
+.piece{aspect-ratio:1/1;border-radius:16px;cursor:pointer;border:1px solid rgba(0,0,0,.05);background-size:300% 300%;box-shadow:0 8px 16px rgba(42,25,53,.06)}
+.piece.selected{outline:3px solid rgba(255,79,163,.35)}
+.quizOption{display:block;width:100%;text-align:left;margin-top:10px;padding:12px 14px;border-radius:14px;border:none;background:rgba(255,255,255,.9);font:inherit;font-weight:800;cursor:pointer;box-shadow:0 8px 16px rgba(42,25,53,.06)}
+.letterEnvelopeWrap{display:flex;justify-content:center}
+.letterEnvelope{width:min(820px,100%);background:rgba(255,255,255,.88);border:1px solid rgba(0,0,0,.06);border-radius:24px;box-shadow:0 18px 38px rgba(42,25,53,.10);overflow:hidden;position:relative}
+.envTop{padding:18px 20px;background:linear-gradient(135deg, rgba(255,79,163,.18), rgba(165,107,255,.14));display:flex;align-items:center;justify-content:space-between;gap:12px}
+.envTitle{font-size:20px;font-weight:1000;color:var(--text)} .envHint{font-size:13px;color:var(--muted);font-weight:800}
+.envelopeBtn{border:none;cursor:pointer;padding:12px 16px;border-radius:16px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-weight:900;box-shadow:0 12px 24px rgba(255,79,163,.20)}
+.envelopeBody{max-height:0;overflow:hidden;transition:max-height .9s ease,padding .4s ease;padding:0 22px;position:relative}
+.letterEnvelope.open .envelopeBody{max-height:2200px;padding:22px}
+.letterPaper{background:linear-gradient(180deg, rgba(255,255,255,.96), rgba(255,248,252,.98));border:1px solid rgba(0,0,0,.05);border-radius:20px;padding:22px;box-shadow:0 10px 24px rgba(42,25,53,.08)}
+.letterText{white-space:pre-line;line-height:1.9;color:var(--text);font-weight:700;min-height:220px}
+.heartsBurst{display:none;text-align:center;padding-top:14px;font-size:22px;letter-spacing:6px}
+.letterEnvelope.open .heartsBurst{display:block;animation:heartPulse 1.8s ease-in-out infinite}
+@keyframes heartPulse{0%,100%{transform:scale(1); opacity:.9}50%{transform:scale(1.08); opacity:1}}
+.videoCard video{width:100%;border-radius:18px;display:block;background:#000}
+.chapterCard.activeChapter{outline:3px solid rgba(255,79,163,.35)}
+.achievementCard.unlocked{outline:3px solid rgba(255,79,163,.25)}
+
+.memeCard img,.photoFrame img{width:100%;height:auto;max-height:72vh;object-fit:contain;border-radius:16px;display:block;background:#fff}
+.yoskaImages img{width:100%;height:auto;max-height:80vh;object-fit:contain;border-radius:18px;background:#fff}
+.secretGrid img{width:100%;height:auto;max-height:76vh;object-fit:contain;border-radius:18px;background:#fff}
+.videoCard video{width:100%;max-height:80vh;border-radius:18px;display:block;background:#000;object-fit:contain}
+.runnerLane{height:220px;background:linear-gradient(180deg,#fff,#fff7fb 70%,#ffe7f3 70%,#ffd8eb 100%);position:relative;overflow:hidden}
+.runner{position:absolute;left:28px;bottom:22px;font-size:44px;transition:none;z-index:2}
+.obstacle{position:absolute;bottom:22px;font-size:34px;will-change:transform}
+.runnerHud{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+.runnerStat{padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.86);font-weight:900;color:var(--muted);box-shadow:0 8px 16px rgba(42,25,53,.06)}
+.cloudGame{min-height:240px;border-radius:20px;background:linear-gradient(180deg,#fefefe,#f6f3ff);padding:14px;border:1px solid rgba(0,0,0,.05);display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.cloudTile{height:72px;border-radius:18px;border:none;background:rgba(255,255,255,.9);box-shadow:0 8px 16px rgba(42,25,53,.06);font-size:28px;cursor:pointer}
+.cloudTile.active{background:linear-gradient(135deg, rgba(170,170,170,.18), rgba(80,80,80,.10))}
+.memeTextGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+@media (max-width:1100px){.memeTextGrid{grid-template-columns:1fr}}
+.textMeme{padding:20px;border-radius:20px;background:rgba(255,255,255,.84);font-weight:1000;color:var(--text);box-shadow:0 10px 22px rgba(42,25,53,.08);text-align:center;min-height:96px;display:grid;place-items:center}
+.finalBadge{display:inline-flex;align-items:center;gap:10px;padding:10px 14px;border-radius:999px;background:linear-gradient(135deg, rgba(255,79,163,.18), rgba(165,107,255,.16));font-weight:1000}
+
+
+.loveWordBtn,.buildBtn{padding:12px 14px;border-radius:14px;border:none;background:rgba(255,255,255,.92);font:inherit;font-weight:900;cursor:pointer;box-shadow:0 8px 16px rgba(42,25,53,.06)}
+.loveWordBtn:disabled,.buildBtn:disabled{opacity:.5;cursor:default}
+
+
+.yoskaLocked img{filter:blur(18px); transition:filter .5s ease, transform .5s ease;}
+.yoskaUnlocked img{filter:none; transform:scale(1.01);}
+.yoskaLockText{margin-top:10px;font-size:14px;color:var(--muted);font-weight:800}
+
+</style>
+</head>
+<body>
+<canvas class="stars" id="stars"></canvas>
+<div class="float" id="float"></div>
+<div class="topbar">
+  <div class="brand">
+    <div class="logo">🌸</div>
+    <div>
+      <div class="tt1">8 марта</div>
+      <div class="tt2">Аделя — маленькая вселенная любви</div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="inventoryDock"><span>🎒 Собрано:</span><span id="inventoryList" class="small">пусто</span></div>
+    <div class="nav" id="nav">
+      <button class="tab active" data-tab="home">Старт</button>
+      <button class="tab" data-tab="story">Сюжет</button>
+      <button class="tab" data-tab="memes">Мемасики</button>
+      <button class="tab" data-tab="games1">Игры I</button>
+      <button class="tab" data-tab="games2">Игры II</button>
+      <button class="tab" data-tab="games3">Игры III</button>
+      <button class="tab" data-tab="prizes">Суперпризы</button>
+      <button class="tab" data-tab="memories">Фото и видео</button>
+      <button class="tab" data-tab="riddles">Загадки</button>
+      <button class="tab" data-tab="achievements">Ачивки</button>
+      <button class="tab" data-tab="final">Финал</button>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+  <section class="panel active" id="home">
+    <div class="grid2">
+      <div class="card">
+        <h1 class="heroTitle">Для тебя, Аделя 🌸</h1>
+        <p style="font-weight:1000;color:var(--text)">Аделя, я безумно тебя люблю</p>
+        <p>Тут собраны наши локальные мемчики, игры, фотографии, видео, письма, призы, пасхалки и вся та тёплая абсурдная атмосфера, из которой складываемся мы</p>
+        <div class="typing" id="typing"></div>
+        <div class="row" style="margin-top:14px">
+          <button class="btn" id="startJourney">Начать путешествие ✨</button>
+          <button class="ghost" id="spawnMagic">Сделай магию 💞</button>
+          <span class="pill">24 задания • 15+ активностей • много любви</span>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Паспорт прохождения</h3>
+        <p>Проходи игры, открывай письма, собирай предметы и разблокируй суперпризы. Это уже не просто сайт, а маленькое приключение для <b>Тебя</b>.</p>
+        <div class="progressWrap" style="margin-top:12px"><div class="progressBar" id="progressBar"></div></div>
+        <div class="grid3" style="margin-top:14px">
+          <div class="reward center"><div class="small">Лепестки</div><div class="bigScore" id="petalsCount">0</div></div>
+          <div class="reward center"><div class="small">Выполнено</div><div class="bigScore" id="tasksDone">0</div></div>
+          <div class="reward center"><div class="small">Всего</div><div class="bigScore" id="tasksTotal">24</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel" id="story">
+    <h2>История этого сайта 📖</h2>
+    <p>Он собран из наших мемов, шуток, тёплых моментов, локальных слов и той самой атмосферы, где «сиротка», «ЙОСЬКА» и «март через два месяца» внезапно становятся частью большого чувства</p>
+    <div class="grid4">
+      <div class="chapterCard activeChapter" id="ch1"><div class="rewardTag">Глава 1</div><h3>Локальные мемы</h3><p>Шутки, которые понятны только нам (и слава богу).</p></div>
+      <div class="chapterCard" id="ch2"><div class="rewardTag">Глава 2</div><h3>Испытания</h3><p>Игры, в которых нужно собирать, угадывать и побеждать.</p></div>
+      <div class="chapterCard" id="ch3"><div class="rewardTag">Глава 3</div><h3>Воспоминания</h3><p>Фото, видео и моменты, которые значат намного больше, чем просто файлы.</p></div>
+      <div class="chapterCard" id="ch4"><div class="rewardTag">Глава 4</div><h3>Письма</h3><p>Самое важное спрятано в конвертах и суперпризах.</p></div>
+    </div>
+  </section>
+
+  
+  <section class="panel" id="memes">
+    <h2>Наши локальные мемчики</h2>
+    <p>Это часть нашей истории. Некоторые вещи могут показаться кому-то странными, но именно в этом и прелесть — это наше.</p>
+    <div class="grid2">
+      <div class="card">
+        <h3>Колесо мемов 🎲</h3>
+        <div class="wheelWrap">
+          <div class="pointer"></div>
+          <div class="memeWheel" id="memeWheel">
+            <span style="transform:rotate(22.5deg) translate(102px) rotate(-22.5deg)">ЙОСЬКА</span>
+            <span style="transform:rotate(67.5deg) translate(102px) rotate(-67.5deg)">сиротка</span>
+            <span style="transform:rotate(112.5deg) translate(102px) rotate(-112.5deg)">ЗА МНОЙ!</span>
+            <span style="transform:rotate(157.5deg) translate(102px) rotate(-157.5deg)">весна ощущается</span>
+            <span style="transform:rotate(202.5deg) translate(102px) rotate(-202.5deg)">отключить рекламу</span>
+            <span style="transform:rotate(247.5deg) translate(102px) rotate(-247.5deg)">обижаю чай</span>
+            <span style="transform:rotate(292.5deg) translate(102px) rotate(-292.5deg)">Ч</span>
+            <span style="transform:rotate(337.5deg) translate(102px) rotate(-337.5deg)">март через два месяца</span>
+          </div>
+          <div class="row"><button class="btn" id="spinMemeWheel">Крутить</button><span class="pill">случайный локальный мем</span></div>
+          <div class="msg" id="memeWheelMsg">Нажми и смотри, что выпадет.</div>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Рандом мемчик</h3>
+        <p>Нажимай — и сайт будет подкидывать случайный прикол.</p>
+        <div class="randomPhrase" id="randomPhrase"></div>
+        <div class="row" style="margin-top:12px">
+          <button class="btn" id="phraseBtn">Запустить прикол</button>
+          <span class="pill">без нежных слов — только хаос, письки и йоська</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+    <h3>а это сборник наших мемчиков</h3>
+    <div class="memeTextGrid" id="textMemeGrid"></div>
+
+    <div class="divider"></div>
+    <div class="bigYoska yoskaLocked" id="yoskaCard">
+      <h2>ЙОСЬКА</h2>
+      <div class="yoskaClick">нажми 5 раз, чтобы разблокировать ЙОСЬКУ</div><div class="yoskaLockText" id="yoskaLockText">пока что фото скрыто в блюре 👀</div>
+      <div class="yoskaImages"><img src="assets/meme_19.jpg" alt="ЙОСЬКА"></div>
+    </div>
+
+    <div class="divider"></div>
+    <h3>а это наши любимые фото мемчики</h3>
+    <div class="memeGallery" id="memeGallery"></div>
+    <div class='videoCard' style='margin-top:16px'><h3>и ещё мемный видосик 🎥</h3><video controls src='assets/meme_video.mp4'></video></div>
+  </section>
+
+
+  <section class="panel" id="games1">
+    <h2>Игры I 🎮</h2>
+    <div class="grid2">
+      <div class="card"><h3>1) Поймай сердечки</h3><p>Цель — 12 сердечек.</p><div class="playfield" id="playfield"><div class="basket" id="basket">ЛОВИ</div></div><div class="row" style="margin-top:12px"><button class="btn" id="startHeartGame">Старт</button><button class="ghost" id="stopHeartGame">Стоп</button></div></div>
+      <div class="card"><div class="grid3"><div class="reward center"><div class="small">Счёт</div><div class="bigScore" id="score">0</div></div><div class="reward center"><div class="small">Пропущено</div><div class="bigScore" id="miss">0</div></div><div class="reward center"><div class="small">Рекорд</div><div class="bigScore" id="bestScore">0</div></div></div><div class="msg" id="heartToast">Поймай сердечко — и здесь всплывёт комплимент 💗</div></div>
+    </div>
+    <div class="divider"></div>
+    <div class="grid2">
+      <div class="miniGameCard"><h3>2) Поймай звёзды</h3><p>Нужно поймать 10 звёздочек.</p><div class="playfield" id="starField"><div class="basket" id="starBasket">ЗВЁЗДЫ</div></div><div class="row" style="margin-top:12px"><button class="btn" id="startStarGame">Старт</button><button class="ghost" id="stopStarGame">Стоп</button></div><div class="msg" id="starMsg">Собери маленькое звёздное небо для неё.</div></div>
+      <div class="miniGameCard"><h3>3) Memory</h3><p>Найди все пары.</p><div class="memoryGrid" id="memoryGrid"></div><div class="row" style="margin-top:12px"><button class="ghost" id="resetMemory">Перемешать</button></div></div>
+    </div>
+    <div class="divider"></div>
+    <div class="grid2">
+      <div class="miniGameCard"><h3>4) Саймон-сердце</h3><p>Запомни и повтори последовательность до длины 5.</p><div class="sequencePads" id="sequencePads"><div class="pad" data-pad="0">💗</div><div class="pad" data-pad="1">🌸</div><div class="pad" data-pad="2">✨</div><div class="pad" data-pad="3">💌</div></div><div class="row" style="margin-top:12px"><button class="btn" id="startSequence">Старт</button></div><div class="msg" id="sequenceMsg">Сначала покажу последовательность, потом повтори её.</div></div>
+      <div class="miniGameCard"><h3>5) Разгони тучки</h3><p>У тебя 12 секунд, чтобы прогнать 12 грустных тучек. Каждая пойманная тучка делает мир светлее.</p><div class="cloudGame" id="lightsBoard"></div><div class="row" style="margin-top:12px"><button class="ghost" id="resetLights">Новая волна</button></div><div class="msg" id="lightsMsg">Нажимай на тучки ☁️ и разгоняй грусть.</div></div>
+    </div>
+  </section>
+
+  <section class="panel" id="games2">
+    <h2>Игры II 🕹️</h2>
+    <div class="grid3">
+      <div class="miniGameCard"><h3>6) Угадай число любви</h3><p>Я загадал число от 1 до 20.</p><input class="guessInput" id="guessNumber" placeholder="Напиши число..." /><div class="row" style="margin-top:12px"><button class="btn" id="checkGuess">Проверить</button><button class="ghost" id="resetGuess">Новое число</button></div><div class="msg" id="guessMsg">За победу с 6 попыток или меньше — приз.</div></div>
+      <div class="miniGameCard"><h3>7) Угадай ласковое слово</h3><p>Сайт покажет подсказку, а тебе нужно угадать, какое из любимых слов подходит лучше всего.</p><div class="card" style="padding:16px;background:rgba(255,255,255,.72)"><div id="loveWordHint" style="font-size:24px;font-weight:1000;text-align:center;min-height:44px">нажми старт</div></div><div class="row" style="margin-top:12px"><button class="btn" id="startLoveWord">Старт</button><button class="smallBtn loveWordBtn">моя душа</button><button class="smallBtn loveWordBtn">любовь моя</button><button class="smallBtn loveWordBtn">малыс мой</button><button class="smallBtn loveWordBtn">любимая</button></div><div class="msg" id="loveWordMsg">Угадай 4 раза правильно — и игра будет пройдена.</div></div>
+      <div class="miniGameCard"><h3>8) Собери нашу фразу</h3><p>Нужно собрать локальную фразу в правильном порядке.</p><div class="row" id="phraseBuild" style="margin-top:14px"><button class="smallBtn buildBtn" data-word="март">март</button><button class="smallBtn buildBtn" data-word="через">через</button><button class="smallBtn buildBtn" data-word="два">два</button><button class="smallBtn buildBtn" data-word="месяца">месяца</button></div><div class="msg" id="tapMsg">Собери фразу: “март через два месяца”.</div><div class="row" style="margin-top:12px"><button class="btn" id="resetBuildPhrase">Сбросить</button></div></div>
+    </div>
+    <div class="divider"></div>
+    <div class="grid3">
+      <div class="miniGameCard"><h3>9) Найди путь к сердцу</h3><p>Нужно пройти по правильной дорожке из 6 клеток подряд.</p><div class="mazeGrid" id="mazeGrid"></div><div class="row" style="margin-top:12px"><button class="ghost" id="resetMaze">Новый путь</button></div><div class="msg" id="mazeMsg">Начни с клетки с 💗 и двигайся по интуиции.</div></div>
+      <div class="miniGameCard"><h3>10) Любовный калькулятор</h3><p>Игра: нажми кнопку и узнай уровень нашей магии.</p><div class="center" style="padding:20px 0"><div class="bigScore" id="loveCalcScore">0%</div></div><div class="row" style="justify-content:center"><button class="btn" id="calcLove">Посчитать ✨</button></div><div class="msg" id="calcMsg">Очевидно, здесь будет что-то очень высокое.</div></div>
+      <div class="miniGameCard"><h3>11) Охота за словами</h3><p>Собери фразу: «я очень люблю тебя».</p><div class="row" id="wordHunt" style="margin-top:14px"><button class="smallBtn" data-word="люблю">люблю</button><button class="smallBtn" data-word="я">я</button><button class="smallBtn" data-word="тебя">тебя</button><button class="smallBtn" data-word="очень">очень</button></div><div class="msg" id="wordMsg">Собери фразу: «я очень люблю тебя».</div><div class="row" style="margin-top:12px"><button class="ghost" id="resetWords">Сбросить</button></div></div>
+    </div>
+  </section>
+
+  <section class="panel" id="games3">
+    <h2>Игры III 🚀</h2>
+    <div class="grid3">
+      <div class="miniGameCard"><h3>12) Фото-пазл</h3><p>Собери пазл из нашего легендарного фото.</p><div class="photoPuzzle" id="photoPuzzle"></div><div class="row" style="margin-top:12px"><button class="ghost" id="shufflePhotoPuzzle">Перемешать</button></div><div class="msg" id="photoPuzzleMsg">Нажми по двум частям, чтобы поменять их местами.</div></div>
+      <div class="miniGameCard"><h3>13) Найди ЙОСЬКУ</h3><p>Среди кнопок спрятан ЙОСЬКА. Найди 5 раз.</p><div class="grid5" id="yoskaFindGrid"></div><div class="msg" id="yoskaFindMsg">Найди ЙОСЬКУ среди случайных слов.</div></div>
+      <div class="miniGameCard"><h3>14) Квиз по локальным мемам</h3><p>Ответь на 3 вопроса про наши приколы.</p><div id="memeQuiz"></div><div class="msg" id="memeQuizMsg">Проверим, насколько ты шаришь писька</div></div>
+    </div>
+    <div class="divider"></div>
+    <div class="grid2">
+      <div class="miniGameCard"><h3>15) Кликер любви</h3><p>Нажми 30 раз на сердце.</p><div class="center" style="padding:10px 0"><button class="btn" id="loveClicker" style="font-size:28px;padding:18px 28px">💗</button></div><div class="msg" id="loveClickMsg">Пока 0/30.</div></div>
+      <div class="miniGameCard"><h3>16) Мини-письмо</h3><p>Открой маленький конверт.</p><div class="letterEnvelopeWrap"><div class="letterEnvelope" id="smallEnvelope"><div class="envTop"><div><div class="envTitle">Тихое письмо для Адели</div><div class="envHint">тут спрятаны самые тёплые слова</div></div><button class="envelopeBtn" id="openSmallEnvelope">Открыть</button></div><div class="envelopeBody"><div class="letterPaper"><div class="letterText" id="smallLetterText"></div></div><div class="heartsBurst">💗 💖 💞 🌸 💗</div></div></div></div></div>
+    </div>
+  </section>
+
+  
+  <section class="panel" id="prizes">
+    <h2>Суперпризы для Адели 🎁</h2>
+    <p>Это уже не просто награды за прохождение — это маленькие подарки, которые я спрятал для тебя. Чем дальше проходишь, тем теплее, смешнее и роднее становится этот раздел.</p>
+    <div class="grid4">
+      <div class="reward locked" id="sp1"><div class="rewardTag">3 победы</div><div class="rewardContent"><h3>Мини-набор нежности</h3><p>Разблокируется право на маленький приступ ласки: объятия, сердечки и мгновенный запас нежности для моей любимой.</p></div></div>
+      <div class="reward locked" id="sp2"><div class="rewardTag">6 побед</div><div class="rewardContent"><h3>Набор локальных легенд</h3><p>Официально подтверждается, что <b>ЙОСЬКА</b>, <b>сиротка</b>, <b>март через два месяца</b> и <b>отключить рекламу</b> — это уже культурное достояние нас двоих.</p></div></div>
+      <div class="reward locked" id="sp3"><div class="rewardTag">9 побед</div><div class="rewardContent"><h3>Коробка воспоминаний</h3><p>Открывается наш романтический набор: первый Новый год, первый поцелуй, любимые фото и то самое чувство, когда хочется пересматривать всё снова и снова.</p></div></div>
+      <div class="reward locked" id="sp4"><div class="rewardTag">12 побед</div><div class="rewardContent"><h3>Главный суперприз</h3><p>Полный доступ к огромному письму, финальному объятию, буре сердечек и последней пасхалке. То есть к самому важному, что тут вообще есть.</p></div></div>
+    </div>
+    <div class="divider"></div>
+    <div class="grid3">
+      <div class="photoSlot"><div style="font-size:42px">💌</div><b>Купон на 1000 объятий</b><p>Без срока действия. Можно использовать в любое время, в любом количестве и только с обязательной нежностью.</p></div>
+      <div class="photoSlot"><div style="font-size:42px">🌸</div><b>Сертификат «Самая любимая»</b><p>Подтверждает, что Аделя официально признана душой, любовью моей и самым важным человеком во вселенной этого сайта.</p></div>
+      <div class="photoSlot"><div style="font-size:42px">🐻</div><b>Пожизненная подписка на наши приколы</b><p>Включает: ЙОСЬКУ, сиротку, странные фразы, обсуждение глупостей и тот самый уютный кринж, без которого счастье уже не ощущается.</p></div>
+    </div>
+    <div class="msg" id="superPrizeMsg">Побеждай в играх — и суперпризы будут постепенно открываться. Чем дальше проходишь, тем милее и смешнее становится эта сокровищница.</div>
+  </section>
+
+
+  <section class="panel" id="memories">
+    <h2>Наши фото и видео 📸</h2>
+    <div class="grid2">
+      <div class="photoFrame">
+        <img src="assets/memory_01.jpg" alt="Наше фото 1">
+        <div class="msg">Ещё один наш момент, который хочется хранить очень бережно.</div>
+      </div>
+      <div class="photoFrame">
+        <img src="assets/memory_02.jpg" alt="Первое совместное фото">
+        <div class="msg" style="white-space:pre-line">Это наше первое совместное фото, сделанное в наш первый Новый год.
+тогда я даже не представлял, каким важным человеком ты для меня станешь.
+а еще в тот день был наш первый поцелуй))</div>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <div class="letterBox">
+      <h3>Маленькое письмо</h3>
+      <p style="white-space:pre-line; color:var(--text); font-weight:700;">Аделя, я безумно рад, что мы встретились и стали самыми близкими людьми на свете 
+Иногда мы просто смеёмся над странными шутками, которые для многих могут показаться кринжом 
+Иногда обсуждаем глупости и ведем себя как придурки 
+Но именно из таких моментов и складывается счастье, спасибо тебе 
+Ты моя душа</p>
+    </div>
+    <div class='videoCard' style='margin-top:14px'><h3>Миленький видосик, мне нлавится</h3><video controls src='assets/memory_video.mp4'></video></div><div class='videoCard'><h3>пусть будет тут. я не хочу, чтобы ты забывала это.</h3><video controls src='assets/meme_video.mp4'></video></div></div>
+  </section>
+
+  <section class="panel" id="riddles">
+    <h2>Загадки и локальные ребусы 🔐</h2>
+    <div class="grid4">
+      <div class="card"><h3>1</h3><p>Что ты мне там подарила?</p><input class="answerInput" id="r1" placeholder="Ответ..." /><button class="btn" style="margin-top:10px" onclick="checkRiddle(1)">Проверить</button><div class="msg" id="r1msg">Подсказка: не совсем правильно, но очень смешно.</div></div>
+      <div class="card"><h3>2</h3><p>Что происходит через два месяца?</p><input class="answerInput" id="r2" placeholder="Ответ..." /><button class="btn" style="margin-top:10px" onclick="checkRiddle(2)">Проверить</button><div class="msg" id="r2msg">Подсказка: очень локальная логика.</div></div>
+      <div class="card"><h3>3</h3><p>Какой ГЛАВНЫЙ НАШ мем?</p><input class="answerInput" id="r3" placeholder="Ответ..." /><button class="btn" style="margin-top:10px" onclick="checkRiddle(3)">Проверить</button><div class="msg" id="r3msg">Подсказка: Й...</div></div>
+      <div class="card"><h3>4</h3><p>Как я люблю тебя называть?</p><input class="answerInput" id="r4" placeholder="Ответ..." /><button class="btn" style="margin-top:10px" onclick="checkRiddle(4)">Проверить</button><div class="msg" id="r4msg">Подсказка: подойдёт любое из четырёх ласковых слов.</div></div>
+    </div>
+    <div class="msg hidden" id="allRiddlesMsg"></div>
+  </section>
+
+  <section class="panel" id="achievements">
+    <h2>Зал достижений 🏅</h2>
+    <div class="grid4">
+      <div class="achievementCard" id="a1"><div class="rewardTag">Ачивка</div><h3>Открыт сердцем</h3><p>Посмотреть мемы и бонусы.</p></div>
+      <div class="achievementCard" id="a2"><div class="rewardTag">Ачивка</div><h3>Ловец любви</h3><p>Победить в ловле сердечек.</p></div>
+      <div class="achievementCard" id="a3"><div class="rewardTag">Ачивка</div><h3>Звёздная</h3><p>Поймать все звёзды.</p></div>
+      <div class="achievementCard" id="a4"><div class="rewardTag">Ачивка</div><h3>Умница</h3><p>Пройти загадки и квиз.</p></div>
+      <div class="achievementCard" id="a5"><div class="rewardTag">Ачивка</div><h3>Реакция века</h3><p>Победить в tap hearts.</p></div>
+      <div class="achievementCard" id="a6"><div class="rewardTag">Ачивка</div><h3>Безумный раннер</h3><p>Добежать до финиша.</p></div>
+      <div class="achievementCard" id="a7"><div class="rewardTag">Ачивка</div><h3>ЙОСЬКА master</h3><p>Открыть скрытый мем.</p></div>
+      <div class="achievementCard" id="a8"><div class="rewardTag">Ачивка</div><h3>Главная героиня</h3><p>Набрать 150 лепестков.</p></div>
+    </div>
+    <div class="msg" id="achMsg">Ачивки пока спят, но скоро начнут светиться.</div>
+  </section>
+
+  <section class="panel" id="final">
+    <h2>Финал 💌</h2>
+    <p>Если ты дошла сюда, Аделя, значит ты прошла уже не просто сайтик, а целую маленькую вселенную, собранную только для тебя.</p>
+    <div class="letterEnvelopeWrap">
+      <div class="letterEnvelope" id="bigEnvelope">
+        <div class="envTop">
+          <div>
+            <div class="envTitle">Огромное письмо для Адели 💗</div>
+            <div class="envHint">открой конверт и дочитай до PS</div>
+          </div>
+          <button class="envelopeBtn" id="openBigEnvelope">Открыть конверт</button>
+        </div>
+        <div class="envelopeBody">
+          <div class="letterPaper"><div class="letterText" id="bigLetterText"></div></div>
+          <div class="heartsBurst">💗 💖 💞 💘 🌸 💗</div>
+          <div class="center" style="margin-top:16px">
+            <button class="btn" id="hugBtn">Обнять Аделю 💗</button>
+            <div style="height:12px"></div>
+            <div id="psYoska" class="smallBtn" style="display:inline-block">PS: ЙОСЬКА</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="center" style="margin-top:18px"><div class="finalBadge">🏆 Аделя прошла всё и открыла главное</div></div><div class="msg" style="margin-top:16px">А дальше — уже настоящая жизнь, где мне хочется делать тебя любимой, счастливой и окутанной заботой каждый день.</div>
+  </section>
+</div>
+
+<div class="secretMeme" id="secretMeme">
+  <div class="secretBox">
+    <div class="secretTitle">Секретная ЙОСЬКА разблокирована 😭</div>
+    <p>Аделя разблокировала секретную ЙОСЬКУ. Это уже уровень абсолютной легенды.</p>
+    <div class="secretGrid" style="grid-template-columns:1fr;max-width:560px;margin:14px auto 0"><img src="assets/meme_19.jpg" alt=""></div>
+    <button class="btn" id="closeSecret">Закрыть</button>
+  </div>
+</div>
+
+<script>
+const MEME_ITEMS = [{"src": "assets/meme_01.jpg", "caption": "Ч"}, {"src": "assets/meme_02.jpg", "caption": "ЗА МНОЙ!!"}, {"src": "assets/meme_03.jpg", "caption": "весна ощущается"}, {"src": "assets/meme_04.jpg", "caption": "отключить рекламу"}, {"src": "assets/meme_05.jpg", "caption": "подрезать лепесточки"}, {"src": "assets/meme_06.jpg", "caption": "март через два месяца"}, {"src": "assets/meme_07.jpg", "caption": "обижаю чай"}, {"src": "assets/meme_08.jpg", "caption": "сиротка"}, {"src": "assets/meme_09.jpg", "caption": "ЙОСЬКА"}, {"src": "assets/meme_10.jpg", "caption": "моя душа"}, {"src": "assets/meme_11.jpg", "caption": "любовь моя"}, {"src": "assets/meme_12.jpg", "caption": "малыс мой"}, {"src": "assets/meme_13.jpg", "caption": "локальный мем №13"}, {"src": "assets/meme_14.jpg", "caption": "локальный мем №14"}, {"src": "assets/meme_15.jpg", "caption": "локальный мем №15"}, {"src": "assets/meme_16.jpg", "caption": "локальный мем №16"}, {"src": "assets/meme_17.jpg", "caption": "локальный мем №17"}, {"src": "assets/meme_18.jpg", "caption": "локальный мем №18"}, {"src": "assets/meme_19.jpg", "caption": "ЙОСЬКА deluxe"}];
+const PHRASES = ["ЙОСЬКА","сиротка","весна ощущается","ЗА МНОЙ!!","март через два месяца","обижаю чай","Ч","отключить рекламу","подрезать лепесточки"];
+const BIG_LETTER = `Аделя, любовь моя, душа моя, любимая, малыс мой, я тебя очень сильно люблю и дорожу тобой так, как не дорожу никем другим, ты изменила мою жизнь и открыла во мне то, что не смогла открыть ни одна девушка в этом мире. С тобой я чувствую, что могу быть любящим, заботливым, и настоящим мужчиной. Я хочу стараться для тебя, хочу склонить весь мир к твоим ногам, ты правда заслуживаешь этого. Никто не вызывал у меня таких сильных чувств, как ты, ни для кого я не старался так, как стараюсь для тебя. Все мои старания, вся моя любовь, созданы лишь для того, чтобы сделать тебя счастливой. Ты заслуживаешь быть любимой, счастливой и окутанной заботой, и я сделаю все, чтобы у тебя это было. Каждый день я влюбляюсь в тебя все больше и больше и эти чувства не собираются останавливаться, ты стала чудом моей жизни, ты стала для меня всем, с праздником, я очень тебя люблю`;
+const SMALL_LETTER = `Аделя, я безумно рад, что мы встретились и стали самыми близкими людьми на свете 
+Иногда мы просто смеёмся над странными шутками, которые для многих могут показаться кринжом 
+Иногда обсуждаем глупости и ведем себя как придурки 
+Но именно из таких моментов и складывается счастье, спасибо тебе 
+Ты моя душа`;
+const QUIZ_DATA = [
+  {q:"Как вы называете сыворотку?", options:["сиротка","сыворотка","сыротка"], correct:0},
+  {q:"Что происходит через два месяца?", options:["март","июль","среда"], correct:0},
+  {q:"Главный локальный мем?", options:["ЙОСЬКА","весна ощущается","обижаю чай"], correct:0}
+];
+const PHOTO_SRC = "assets/memory_02.jpg";
+
+const tabs=[...document.querySelectorAll('.tab')], panels=[...document.querySelectorAll('.panel')], floatEl=document.getElementById('float');
+function openTab(id){tabs.forEach(t=>t.classList.toggle('active',t.dataset.tab===id)); panels.forEach(p=>p.classList.toggle('active',p.id===id)); window.scrollTo({top:0,behavior:'smooth'}); spawnParticles(8);}
+document.getElementById('nav').addEventListener('click',e=>{const b=e.target.closest('.tab'); if(!b) return; openTab(b.dataset.tab);});
+document.getElementById('startJourney').addEventListener('click',()=>openTab('story'));
+document.getElementById('spawnMagic').addEventListener('click',()=>spawnParticles(34));
+
+const particles=["💗","💖","💘","💕","💞","🌸","✨","⭐"];
+function spawnParticles(count=14){for(let i=0;i<count;i++){const d=document.createElement('div'); d.className='particle'; d.textContent=particles[Math.floor(Math.random()*particles.length)]; d.style.left=(Math.random()*100)+'vw'; d.style.bottom=(-20-Math.random()*50)+'px'; d.style.fontSize=(14+Math.random()*20)+'px'; d.style.animationDuration=(4+Math.random()*4)+'s'; d.style.animationDelay=(Math.random()*0.7)+'s'; floatEl.appendChild(d); d.addEventListener('animationend',()=>d.remove());}}
+setInterval(()=>spawnParticles(2),2400);
+
+const cvs=document.getElementById('stars'), ctx=cvs.getContext('2d'); let sw=0,sh=0,stars=[];
+function resizeStars(){sw=cvs.width=window.innerWidth; sh=cvs.height=window.innerHeight; stars=Array.from({length:80},()=>({x:Math.random()*sw,y:Math.random()*sh,r:Math.random()*1.8+.5,a:Math.random()}));}
+function drawStars(){ctx.clearRect(0,0,sw,sh); for(const s of stars){s.a+=(Math.random()-.5)*.05; if(s.a<.1)s.a=.1; if(s.a>1)s.a=1; ctx.beginPath(); ctx.fillStyle=`rgba(255,255,255,${s.a})`; ctx.arc(s.x,s.y,s.r,0,Math.PI*2); ctx.fill();} requestAnimationFrame(drawStars);}
+window.addEventListener('resize', resizeStars); resizeStars(); drawStars();
+
+const introText=`Аделя, я сделал для тебя
+целую маленькую вселенную.
+
+Тут есть мемы, фотографии,
+видео, игры, письма,
+суперпризы и куча тепла.
+
+С 8 марта, любимая 🌸`;
+let ti=0; const typingEl=document.getElementById('typing');
+function typeTick(){typingEl.innerHTML=introText.slice(0,ti)+'<span class="cursor"></span>'; ti++; if(ti<=introText.length) requestAnimationFrame(typeTick); else typingEl.textContent=introText;}
+typeTick();
+
+const state={petals:0,tasksDone:new Set(),inventory:[],achievements:new Set(),gamesWon:0,riddles:new Set()};
+function updateInventory(){document.getElementById('inventoryList').textContent=state.inventory.length?state.inventory.join(' • '):'пусто';}
+function addItem(item){if(!state.inventory.includes(item)){state.inventory.push(item); updateInventory(); spawnParticles(10);}}
+function unlockAchievement(id,text){if(state.achievements.has(id)) return; state.achievements.add(id); const el=document.getElementById(id); if(el) el.classList.add('unlocked'); document.getElementById('achMsg').textContent=text;}
+function addPetals(n,taskKey){if(taskKey && state.tasksDone.has(taskKey)) return; if(taskKey) state.tasksDone.add(taskKey); state.petals += n; document.getElementById('petalsCount').textContent=state.petals; document.getElementById('tasksDone').textContent=state.tasksDone.size; document.getElementById('progressBar').style.width=Math.min(100,(state.tasksDone.size/24)*100)+'%'; if(state.petals>=150) unlockAchievement('a8','Ачивка “Главная героиня” открыта.'); unlockRewards(); spawnParticles(14);}
+function unlockRewards(){
+  if(state.tasksDone.size>=6) document.getElementById('ch2').classList.add('activeChapter');
+  if(state.tasksDone.size>=12) document.getElementById('ch3').classList.add('activeChapter');
+  if(state.tasksDone.size>=18) document.getElementById('ch4').classList.add('activeChapter');
+  [['sp1',3],['sp2',6],['sp3',9],['sp4',12]].forEach(pair=>{ if(state.gamesWon>=pair[1]) document.getElementById(pair[0]).classList.remove('locked'); });
+  const spMsg = document.getElementById('superPrizeMsg');
+  if(state.gamesWon>=12) spMsg.innerHTML='<span class="ok">Все суперпризы открыты!</span> Аделя прошла всю игровую часть 💗';
+  else if(state.gamesWon>=9) spMsg.innerHTML='Почти всё открыто. Остался последний шаг к главному суперпризу.';
+  else if(state.gamesWon>=6) spMsg.innerHTML='Открыта уже большая часть суперпризов. Продолжай проходить игры ✨';
+}
+
+// memes
+const memeGallery = document.getElementById('memeGallery');
+const textMemeGrid = document.getElementById('textMemeGrid');
+const textMemes = ["Ч","ЗА МНОЙ!!","весна ощущается","отключить рекламу","подрезать лепесточки","март через два месяца","обижаю чай","сиротка","ЙОСЬКА"];
+const localChaos = ["ЙОСЬКА","сиротка","весна ощущается","ЗА МНОЙ!!","март через два месяца","обижаю чай","Ч","отключить рекламу","подрезать лепесточки"];
+textMemes.forEach(text=>{
+  const d=document.createElement('div');
+  d.className='textMeme';
+  d.textContent=text;
+  textMemeGrid.appendChild(d);
+});
+MEME_ITEMS.forEach(item=>{
+  const d=document.createElement('div');
+  d.className='memeCard';
+  d.innerHTML=`<img src="${item.src}" alt="">`;
+  memeGallery.appendChild(d);
+});
+
+let yoskaClicks = 0;
+const yoskaCard = document.getElementById('yoskaCard');
+const yoskaLockText = document.getElementById('yoskaLockText');
+yoskaCard.addEventListener('click', ()=>{
+  yoskaClicks++;
+  spawnParticles(6);
+  if(yoskaClicks < 5){
+    const left = 5 - yoskaClicks;
+    yoskaLockText.textContent = `ещё ${left} ${left===1 ? 'нажатие' : left<5 ? 'нажатия' : 'нажатий'} до разблокировки`;
+  }
+  if(yoskaClicks >= 5){
+    yoskaCard.classList.remove('yoskaLocked');
+    yoskaCard.classList.add('yoskaUnlocked');
+    yoskaLockText.textContent = 'ЙОСЬКА разблокирована 😭';
+    document.getElementById('secretMeme').classList.add('show');
+    addItem('🧸 ЙОСЬКА');
+    unlockAchievement('a7','Ачивка “ЙОСЬКА master” открыта.');
+  }
+});
+document.getElementById('closeSecret').addEventListener('click', ()=>document.getElementById('secretMeme').classList.remove('show'));
+document.getElementById('psYoska').addEventListener('click', ()=>document.getElementById('secretMeme').classList.add('show'));
+
+const wheelWords=["ЙОСЬКА","сиротка","ЗА МНОЙ!!","весна ощущается","отключить рекламу","обижаю чай","Ч","март через два месяца"];
+let wheelRotation=0;
+document.getElementById('spinMemeWheel').addEventListener('click',()=>{
+  const extra=1800+Math.floor(Math.random()*1200);
+  wheelRotation += extra;
+  document.getElementById('memeWheel').style.transform=`rotate(${wheelRotation}deg)`;
+  const normalized=(360-(wheelRotation%360))%360;
+  const idx=Math.floor((normalized+22.5)/45)%8;
+  setTimeout(()=>document.getElementById('memeWheelMsg').innerHTML=`Выпало: <b>${wheelWords[idx]}</b>`,4450);
+});
+document.getElementById('phraseBtn').addEventListener('click', ()=>{
+  document.getElementById('randomPhrase').textContent = PHRASES[Math.floor(Math.random()*PHRASES.length)];
+  spawnParticles(5);
+});
+
+setTimeout(()=>{addPetals(6,'memes-view'); addItem('мемы'); unlockAchievement('a1','Ачивка “Открыт сердцем” открыта.');}, 2000);
+
+// generic catcher
+function makeCatcher(fieldId,basketId,msgId,targetCount,emojiPool,taskKey,reward,item,achievementId,achievementText){
+  const field=document.getElementById(fieldId), basket=document.getElementById(basketId), msg=document.getElementById(msgId);
+  let drops=[], timer=null, score=0;
+  function setBasket(clientX){const r=field.getBoundingClientRect(); let x=Math.max(.08,Math.min(.92,(clientX-r.left)/r.width)); basket.style.left=(x*100)+'%';}
+  field.addEventListener('mousemove',e=>setBasket(e.clientX));
+  field.addEventListener('touchmove',e=>{if(e.touches&&e.touches.length) setBasket(e.touches[0].clientX);}, {passive:true});
+  function spawn(){const el=document.createElement('div'); el.className='fallingThing'; el.textContent=emojiPool[Math.floor(Math.random()*emojiPool.length)]; const x=8+Math.random()*84; el.style.left=x+'%'; field.appendChild(el); drops.push({el:el,y:-40,speed:1.2+Math.random()*1.6});}
+  function loop(){const fr=field.getBoundingClientRect(), br=basket.getBoundingClientRect(); drops.forEach(d=>{d.y += 3.2*d.speed; d.el.style.transform=`translateY(${d.y}px)`;}); drops=drops.filter(d=>{const dr=d.el.getBoundingClientRect(); const hit=!(dr.right<br.left||dr.left>br.right||dr.bottom<br.top||dr.top>br.bottom); if(hit){score++; d.el.remove(); msg.innerHTML=`Поймано: <b>${score}/${targetCount}</b>`; if(score>=targetCount){stop(); msg.innerHTML='<span class="ok">Победа!</span>'; state.gamesWon++; addPetals(reward,taskKey); if(item) addItem(item); if(achievementId) unlockAchievement(achievementId,achievementText); unlockRewards();} return false;} if(dr.top>fr.bottom+20){d.el.remove(); return false;} return true;}); requestAnimationFrame(loop);}
+  requestAnimationFrame(loop);
+  function start(){stop(); score=0; msg.textContent='Погнали!'; timer=setInterval(spawn,520);}
+  function stop(){if(timer) clearInterval(timer); timer=null; drops.forEach(d=>d.el.remove()); drops=[];}
+  return {start:start, stop:stop, getScore:()=>score};
+}
+const heartGame=makeCatcher('playfield','basket','heartToast',12,['💗','💖','💘','💕'],'heart-game',15,'💗 сердце','a2','Ачивка “Ловец любви” открыта.');
+document.getElementById('startHeartGame').addEventListener('click',heartGame.start); document.getElementById('stopHeartGame').addEventListener('click',heartGame.stop);
+const starGame=makeCatcher('starField','starBasket','starMsg',10,['⭐','🌟','✨'],'star-game',14,'⭐ звезда','a3','Ачивка “Звёздная” открыта.');
+document.getElementById('startStarGame').addEventListener('click',starGame.start); document.getElementById('stopStarGame').addEventListener('click',starGame.stop);
+setInterval(()=>{document.getElementById('score').textContent=heartGame.getScore(); document.getElementById('bestScore').textContent=Math.max(Number(document.getElementById('bestScore').textContent)||0, heartGame.getScore());},200);
+
+// memory
+function shuffle(arr){const a=arr.slice(); for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1)); const t=a[i]; a[i]=a[j]; a[j]=t;} return a;}
+const memoryIcons=["💗","💗","🌸","🌸","✨","✨","💌","💌","⭐","⭐","🫶","🫶"];
+const memoryGrid=document.getElementById('memoryGrid'); let openCards=[], lockMemory=false, memoryMatches=0;
+function initMemory(){const arr=shuffle(memoryIcons); memoryGrid.innerHTML=''; openCards=[]; lockMemory=false; memoryMatches=0; arr.forEach(icon=>{const d=document.createElement('div'); d.className='memoryCard'; d.dataset.icon=icon; d.innerHTML='<div class="memoryInner"><div class="memoryFront">💞</div><div class="memoryBack">'+icon+'</div></div>'; d.addEventListener('click',()=>openMemoryCard(d)); memoryGrid.appendChild(d);});}
+function openMemoryCard(card){
+  if(lockMemory||card.classList.contains('open')||card.classList.contains('matched')) return;
+  card.classList.add('open'); openCards.push(card);
+  if(openCards.length===2){
+    lockMemory=true;
+    const a=openCards[0], b=openCards[1];
+    if(a.dataset.icon===b.dataset.icon){
+      setTimeout(()=>{
+        a.classList.remove('open'); b.classList.remove('open');
+        a.classList.add('matched'); b.classList.add('matched');
+        openCards=[]; lockMemory=false; memoryMatches++;
+        if(memoryMatches===6){state.gamesWon++; addPetals(18,'memory-game'); addItem('🧠 память'); unlockRewards();}
+      },300);
+    } else {
+      setTimeout(()=>{a.classList.remove('open'); b.classList.remove('open'); openCards=[]; lockMemory=false;},650);
+    }
+  }
+}
+document.getElementById('resetMemory').addEventListener('click', initMemory); initMemory();
+
+// simon
+const pads=[...document.querySelectorAll('.pad')], sequenceMsg=document.getElementById('sequenceMsg'); let seq=[], userSeq=[], seqActive=false;
+function flashPad(i){pads[i].classList.add('flash'); setTimeout(()=>pads[i].classList.remove('flash'),350);}
+async function playSequence(){seqActive=false; for(const i of seq){flashPad(i); await new Promise(r=>setTimeout(r,550));} userSeq=[]; seqActive=true; sequenceMsg.textContent='Теперь твоя очередь.';}
+function nextRound(){seq.push(Math.floor(Math.random()*4)); sequenceMsg.innerHTML='Запоминай...'; playSequence();}
+document.getElementById('startSequence').addEventListener('click',()=>{seq=[]; nextRound();});
+pads.forEach(p=>p.addEventListener('click',()=>{if(!seqActive) return; const i=Number(p.dataset.pad); flashPad(i); userSeq.push(i); const idx=userSeq.length-1; if(userSeq[idx]!==seq[idx]){seqActive=false; sequenceMsg.innerHTML='<span class="no">Почти!</span> Попробуй сначала.'; return;} if(userSeq.length===seq.length){ if(seq.length>=5){seqActive=false; sequenceMsg.innerHTML='<span class="ok">Победа!</span>'; state.gamesWon++; addPetals(16,'sequence-game'); addItem('🔁 ритм'); unlockRewards();} else setTimeout(nextRound,700); }}));
+
+// clouds game
+const lightsBoard=document.getElementById('lightsBoard'), lightsMsg=document.getElementById('lightsMsg');
+let cloudTimer=null, cloudHits=0, cloudTime=12, activeCloud=-1;
+function renderCloudBoard(){
+  lightsBoard.innerHTML='';
+  for(let i=0;i<12;i++){
+    const b=document.createElement('button');
+    b.className='cloudTile'+(i===activeCloud?' active':'');
+    b.textContent=i===activeCloud?'☁️':'🌤️';
+    b.addEventListener('click',()=>{
+      if(i===activeCloud){
+        cloudHits++;
+        lightsMsg.textContent=`Разогнано тучек: ${cloudHits}/12`;
+        spawnParticles(4);
+        pickCloud();
+        if(cloudHits>=12){
+          clearInterval(cloudTimer);
+          lightsMsg.innerHTML='<span class="ok">Грусть разогнана!</span> Небо снова ясное 🌤️';
+          addPetals(12,'lights-game');
+          addItem('🌤️ ясное небо');
+        }
+      }
+    });
+    lightsBoard.appendChild(b);
+  }
+}
+function pickCloud(){ activeCloud=Math.floor(Math.random()*12); renderCloudBoard(); }
+function initLights(){
+  cloudHits=0; cloudTime=12; pickCloud();
+  lightsMsg.textContent='Нажимай на тучки ☁️ и разгоняй грусть.';
+  if(cloudTimer) clearInterval(cloudTimer);
+  cloudTimer=setInterval(()=>{
+    cloudTime--;
+    pickCloud();
+    if(cloudTime<=0){
+      clearInterval(cloudTimer);
+      if(cloudHits<12) lightsMsg.innerHTML='<span class="no">Тучки остались.</span> Попробуй ещё раз.';
+    }
+  }, 900);
+}
+document.getElementById('resetLights').addEventListener('click',initLights); initLights();
+
+// guess number
+let secret=1+Math.floor(Math.random()*20), guessTries=0;
+function normalize(s){return (s||'').trim().toLowerCase().replaceAll('ё','е');}
+document.getElementById('checkGuess').addEventListener('click',()=>{const v=Number(document.getElementById('guessNumber').value); if(!v){document.getElementById('guessMsg').textContent='Нужно число от 1 до 20'; return;} guessTries++; if(v===secret){document.getElementById('guessMsg').innerHTML='<span class="ok">Угадано!</span> '+guessTries+' попыток.'; if(guessTries<=6){addPetals(10,'guess-game'); addItem('🔢 число');}} else if(v<secret) document.getElementById('guessMsg').textContent='Загаданное число больше 💫'; else document.getElementById('guessMsg').textContent='Загаданное число меньше 💫';});
+document.getElementById('resetGuess').addEventListener('click',()=>{secret=1+Math.floor(Math.random()*20); guessTries=0; document.getElementById('guessMsg').textContent='Я загадал новое число.';});
+
+
+// game 7: guess the ласковое слово
+const loveWordHint = document.getElementById('loveWordHint');
+const loveWordMsg = document.getElementById('loveWordMsg');
+const loveWordButtons = [...document.querySelectorAll('.loveWordBtn')];
+const loveWordRounds = [
+  {hint:'самое тёплое и глубокое', answer:'моя душа'},
+  {hint:'самое романтичное', answer:'любовь моя'},
+  {hint:'самое ваше милое', answer:'малыс мой'},
+  {hint:'самое нежное и простое', answer:'любимая'}
+];
+let loveWordIndex = 0, loveWordWins = 0;
+function startLoveWordGame(){
+  loveWordIndex = 0;
+  loveWordWins = 0;
+  loveWordHint.textContent = loveWordRounds[0].hint;
+  loveWordMsg.textContent = 'Угадай 4 раза правильно — и игра будет пройдена.';
+  loveWordButtons.forEach(b=>b.disabled=false);
+}
+document.getElementById('startLoveWord').addEventListener('click', startLoveWordGame);
+loveWordButtons.forEach(btn=>btn.addEventListener('click', ()=>{
+  if(loveWordIndex >= loveWordRounds.length) return;
+  const current = loveWordRounds[loveWordIndex];
+  if(btn.textContent === current.answer){
+    loveWordWins++;
+    loveWordIndex++;
+    if(loveWordIndex >= loveWordRounds.length){
+      loveWordHint.textContent = 'всё угадано 💗';
+      loveWordMsg.innerHTML = '<span class="ok">Победа!</span> Все слова угаданы.';
+      state.gamesWon++;
+      addPetals(15,'love-word-game');
+      addItem('💬 ласковые слова');
+      unlockRewards();
+    } else {
+      loveWordHint.textContent = loveWordRounds[loveWordIndex].hint;
+      loveWordMsg.textContent = `Правильно. Осталось ${loveWordRounds.length - loveWordIndex}.`;
+    }
+  } else {
+    loveWordMsg.innerHTML = '<span class="no">Почти.</span> Попробуй ещё раз.';
+  }
+}));
+
+// game 8: build phrase
+let builtPhrase = [];
+const targetBuild = ['март','через','два','месяца'];
+const buildBtns = [...document.querySelectorAll('.buildBtn')];
+const tapMsg = document.getElementById('tapMsg');
+function resetBuildPhrase(){
+  builtPhrase = [];
+  tapMsg.textContent = 'Собери фразу: “март через два месяца”.';
+  buildBtns.forEach(b=>{b.disabled=false; b.style.opacity=1;});
+}
+document.getElementById('resetBuildPhrase').addEventListener('click', resetBuildPhrase);
+buildBtns.forEach(btn=>btn.addEventListener('click', ()=>{
+  builtPhrase.push(btn.dataset.word);
+  btn.disabled = true;
+  btn.style.opacity = .5;
+  tapMsg.textContent = builtPhrase.join(' ');
+  if(builtPhrase.length === targetBuild.length){
+    if(JSON.stringify(builtPhrase) === JSON.stringify(targetBuild)){
+      tapMsg.innerHTML = '<span class="ok">Победа!</span> Фраза собрана правильно.';
+      state.gamesWon++;
+      addPetals(15,'build-phrase-game');
+      addItem('🧩 локальная фраза');
+      unlockRewards();
+    } else {
+      tapMsg.innerHTML = '<span class="no">Порядок не тот.</span> Нажми “Сбросить” и попробуй ещё.';
+    }
+  }
+}));
+
+
+// maze
+const mazeGrid=document.getElementById('mazeGrid'), mazeMsg=document.getElementById('mazeMsg'); let path=[], pathIndex=0;
+function newPath(){path=[0]; while(path.length<6){const last=path[path.length-1]; const opts=[]; const r=Math.floor(last/6), c=last%6; [[r+1,c],[r,c+1],[r,c-1],[r-1,c]].forEach(([rr,cc])=>{if(rr>=0&&rr<6&&cc>=0&&cc<6){const idx=rr*6+cc; if(!path.includes(idx)) opts.push(idx);}}); path.push(opts[Math.floor(Math.random()*opts.length)]);} pathIndex=0; renderMaze();}
+function renderMaze(){mazeGrid.innerHTML=''; for(let i=0;i<36;i++){const d=document.createElement('div'); d.className='mazeTile'; if(i===path[0]) d.textContent='💗'; else if(i===path[path.length-1]) d.textContent='🏁'; d.addEventListener('click',()=>pickMaze(i,d)); mazeGrid.appendChild(d);}}
+function pickMaze(i,el){if(i===path[pathIndex]){el.classList.add('done'); pathIndex++; if(pathIndex>=path.length){mazeMsg.innerHTML='<span class="ok">Путь найден!</span> Ты дошла к сердцу.'; addPetals(14,'maze-game'); addItem('🗺️ маршрут'); return;} mazeMsg.textContent=`Правильно. Осталось ${path.length-pathIndex} шагов.`;} else mazeMsg.innerHTML='<span class="no">Не туда.</span> Попробуй новый путь.';}
+document.getElementById('resetMaze').addEventListener('click',newPath); newPath();
+
+// calc love
+document.getElementById('calcLove').addEventListener('click',()=>{const score=90+Math.floor(Math.random()*11); document.getElementById('loveCalcScore').textContent=score+'%'; document.getElementById('calcMsg').innerHTML=`Совместимость: <b>${score}%</b> 💗`; if(score>=95){addPetals(10,'calc-game'); addItem('📈 магия');}});
+
+// words
+let wordsPicked=[]; const targetWords=['я','очень','люблю','тебя'];
+document.querySelectorAll('#wordHunt .smallBtn').forEach(btn=>btn.addEventListener('click',()=>{wordsPicked.push(btn.dataset.word); btn.disabled=true; btn.style.opacity=.5; document.getElementById('wordMsg').textContent=wordsPicked.join(' '); if(wordsPicked.length===4){if(JSON.stringify(wordsPicked)===JSON.stringify(targetWords)){document.getElementById('wordMsg').innerHTML='<span class="ok">Фраза собрана правильно!</span>'; addPetals(10,'words-game'); addItem('📝 фраза');} else document.getElementById('wordMsg').innerHTML='<span class="no">Порядок не тот.</span>';}}));
+document.getElementById('resetWords').addEventListener('click',()=>{wordsPicked=[]; document.getElementById('wordMsg').textContent='Собери фразу: «я очень люблю тебя».'; document.querySelectorAll('#wordHunt .smallBtn').forEach(btn=>{btn.disabled=false; btn.style.opacity=1;});});
+
+// photo puzzle
+const photoPuzzle = document.getElementById('photoPuzzle');
+let photoOrder = [...Array(9).keys()];
+let selectedPiece = null;
+function renderPhotoPuzzle(){
+  photoPuzzle.innerHTML='';
+  photoOrder.forEach((val, idx)=>{
+    const r = Math.floor(val/3), c = val%3;
+    const d = document.createElement('div');
+    d.className='piece'+(selectedPiece===idx?' selected':'');
+    d.style.backgroundImage=`url('${PHOTO_SRC}')`;
+    d.style.backgroundPosition=`${c*50}% ${r*50}%`;
+    d.addEventListener('click',()=>clickPiece(idx));
+    photoPuzzle.appendChild(d);
+  });
+  if(photoOrder.every((v,i)=>v===i)){document.getElementById('photoPuzzleMsg').innerHTML='<span class="ok">Фото собрано!</span> Это ваш важный момент 💗'; addPetals(16,'photo-puzzle'); addItem('📸 фото-пазл');}
+}
+function shufflePhotoPuzzle(){photoOrder=shuffle([...Array(9).keys()]); if(photoOrder.every((v,i)=>v===i)) photoOrder=shuffle(photoOrder); selectedPiece=null; renderPhotoPuzzle();}
+function clickPiece(idx){if(selectedPiece===null) selectedPiece=idx; else if(selectedPiece===idx) selectedPiece=null; else {const tmp=photoOrder[selectedPiece]; photoOrder[selectedPiece]=photoOrder[idx]; photoOrder[idx]=tmp; selectedPiece=null;} renderPhotoPuzzle();}
+document.getElementById('shufflePhotoPuzzle').addEventListener('click', shufflePhotoPuzzle); shufflePhotoPuzzle();
+
+// find yoska
+const yoskaWords = ["ЙОСЬКА","сиротка","весна","чай","реклама","март","малыс","душа","любовь","ЗА МНОЙ!!"];
+const yoskaFindGrid=document.getElementById('yoskaFindGrid');
+let yoskaFindCount = 0, yoskaTarget = 5;
+function renderYoskaFind(){
+  yoskaFindGrid.innerHTML='';
+  const targetPos = Math.floor(Math.random()*20);
+  for(let i=0;i<20;i++){
+    const b=document.createElement('button'); b.className='smallBtn';
+    const isTarget = i===targetPos;
+    b.textContent=isTarget?'ЙОСЬКА':yoskaWords[1+Math.floor(Math.random()*(yoskaWords.length-1))];
+    b.addEventListener('click',()=>{ if(isTarget){ yoskaFindCount++; document.getElementById('yoskaFindMsg').textContent=`Найдено ЙОСЬКА: ${yoskaFindCount}/${yoskaTarget}`; if(yoskaFindCount>=yoskaTarget){document.getElementById('yoskaFindMsg').innerHTML='<span class="ok">ЙОСЬКА найден(а)!</span>'; addPetals(12,'find-yoska'); addItem('🧸 ЙОСЬКА');} else renderYoskaFind(); } else document.getElementById('yoskaFindMsg').innerHTML='<span class="no">Не ЙОСЬКА.</span>'; });
+    yoskaFindGrid.appendChild(b);
+  }
+}
+renderYoskaFind();
+
+// meme quiz
+const memeQuizEl = document.getElementById('memeQuiz');
+let quizIndex = 0, quizCorrect = 0;
+function renderQuiz(){
+  const q = QUIZ_DATA[quizIndex];
+  if(!q){ document.getElementById('memeQuizMsg').innerHTML = quizCorrect===QUIZ_DATA.length ? '<span class="ok">Квиз пройден!</span>' : '<span class="no">Можно перепройти.</span>'; if(quizCorrect===QUIZ_DATA.length){ addPetals(12,'meme-quiz'); addItem('🧩 квиз'); unlockAchievement('a4','Ачивка “Умница” открыта.'); } return; }
+  memeQuizEl.innerHTML = `<h3>${q.q}</h3>`;
+  q.options.forEach((opt,i)=>{
+    const b = document.createElement('button');
+    b.className='quizOption'; b.textContent=opt;
+    b.addEventListener('click',()=>{ if(i===q.correct) quizCorrect++; quizIndex++; renderQuiz(); });
+    memeQuizEl.appendChild(b);
+  });
+}
+renderQuiz();
+
+// love clicker
+let loveClicks = 0;
+document.getElementById('loveClicker').addEventListener('click', ()=>{loveClicks++; document.getElementById('loveClickMsg').textContent = `Пока ${loveClicks}/30.`; spawnParticles(3); if(loveClicks>=30){document.getElementById('loveClickMsg').innerHTML = '<span class="ok">Сердце переполнено!</span>'; addPetals(10,'love-clicker'); addItem('💞 клики');}});
+
+// letters
+function typeInto(el, text){let i=0; el.textContent=''; function step(){el.textContent=text.slice(0,i); i++; if(i<=text.length) requestAnimationFrame(step);} step();}
+const smallEnvelope=document.getElementById('smallEnvelope'), openSmallEnvelope=document.getElementById('openSmallEnvelope'), smallLetterText=document.getElementById('smallLetterText');
+let smallStarted=false;
+openSmallEnvelope.addEventListener('click', ()=>{ smallEnvelope.classList.add('open'); if(!smallStarted){ smallStarted=true; typeInto(smallLetterText, SMALL_LETTER); addPetals(8,'small-letter'); addItem('💌 тихое письмо'); spawnParticles(24); } });
+
+const bigEnvelope=document.getElementById('bigEnvelope'), openBigEnvelope=document.getElementById('openBigEnvelope'), bigLetterText=document.getElementById('bigLetterText');
+let bigStarted=false;
+openBigEnvelope.addEventListener('click', ()=>{ bigEnvelope.classList.add('open'); if(!bigStarted){ bigStarted=true; typeInto(bigLetterText, BIG_LETTER); addPetals(20,'big-letter'); addItem('❤️ огромное письмо'); spawnParticles(34); } });
+document.getElementById('hugBtn').addEventListener('click', ()=>spawnParticles(50));
+
+// riddles
+window.checkRiddle = function(n){
+  const value = normalize(document.getElementById('r'+n).value);
+  const answers = {
+    1:['сиротка'],
+    2:['март','март через два месяца'],
+    3:['йоська'],
+    4:['моя душа','любовь моя','малыс мой','любимая']
+  };
+  const ok = answers[n].includes(value);
+  const msg = document.getElementById('r'+n+'msg');
+  if(ok){ msg.innerHTML='<span class="ok">Правильно!</span>'; state.riddles.add(n); if(state.riddles.size===4){ document.getElementById('allRiddlesMsg').classList.remove('hidden'); document.getElementById('allRiddlesMsg').innerHTML='<span class="ok">Все загадки разгаданы!</span>'; addPetals(14,'riddles-all'); addItem('🔐 коды'); } }
+  else msg.innerHTML='<span class="no">Пока нет.</span>';
+};
+
+updateInventory();
+unlockRewards();
+</script>
+</body>
+</html>
